@@ -4,6 +4,7 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.GeocodingResult;
+import com.stoom.dto.EnderecoRequest;
 import com.stoom.model.Endereco;
 import com.stoom.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,12 @@ public class EnderecoService {
         return repository.findById(id).get();
     }
 
-    @Validated
-    public Endereco save(Endereco endereco) throws InterruptedException, ApiException, IOException {
+    public Endereco save(EnderecoRequest endereco) throws InterruptedException, ApiException, IOException {
         if (endereco.getLatitude() != null && endereco.getLongitude() != null) {
             latitudeAndLongitudeNull(endereco);
         }
-        return repository.save(endereco);
+        Endereco model = endereco.mapToEntity();
+        return repository.save(model);
     }
 
     public Endereco update(Integer id, Endereco enderecoUpdated) throws InterruptedException, ApiException, IOException {
@@ -49,12 +50,8 @@ public class EnderecoService {
         endereco.setCountry(enderecoUpdated.getCountry());
         endereco.setZipcode(enderecoUpdated.getZipcode());
         endereco.setState(enderecoUpdated.getState());
-        if (enderecoUpdated.getLatitude() == null && enderecoUpdated.getLongitude() == null) {
-            latitudeAndLongitudeNull(endereco);
-        } else {
-            endereco.setLatitude(enderecoUpdated.getLatitude());
-            endereco.setLongitude(enderecoUpdated.getLongitude());
-        }
+        endereco.setLatitude(enderecoUpdated.getLatitude());
+        endereco.setLongitude(enderecoUpdated.getLongitude());
 
         return repository.save(endereco);
     }
@@ -65,7 +62,7 @@ public class EnderecoService {
         repository.delete(endereco);
     }
 
-    private void latitudeAndLongitudeNull(Endereco endereco) throws ApiException, InterruptedException, IOException {
+    private void latitudeAndLongitudeNull(EnderecoRequest endereco) throws ApiException, InterruptedException, IOException {
         GeoApiContext context = new GeoApiContext.Builder().apiKey("AIzaSyCj0cY2yEvVfYhAaTz3-P2MW-YRKmhz5Uw").build();
         GeocodingResult[] results = GeocodingApi.geocode(context, endereco.getStreetName() + endereco.getNeighbourhood() + endereco.getCity() + endereco.getZipcode()).await();
 

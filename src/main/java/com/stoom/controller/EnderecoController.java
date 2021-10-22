@@ -1,17 +1,23 @@
 package com.stoom.controller;
 
 import com.google.maps.errors.ApiException;
+import com.stoom.dto.EnderecoRequest;
 import com.stoom.model.Endereco;
 import com.stoom.service.EnderecoService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/endereco")
 public class EnderecoController {
 
@@ -30,7 +36,7 @@ public class EnderecoController {
     }
 
     @PostMapping
-    public ResponseEntity<Endereco> save(@RequestBody Endereco endereco) throws InterruptedException, ApiException, IOException {
+    public ResponseEntity<Endereco> save(@Validated @RequestBody EnderecoRequest endereco) throws InterruptedException, ApiException, IOException {
         return new ResponseEntity<Endereco>(service.save(endereco), HttpStatus.CREATED);
     }
 
