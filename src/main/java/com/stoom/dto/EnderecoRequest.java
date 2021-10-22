@@ -33,12 +33,22 @@ public class EnderecoRequest {
     @JsonProperty("neighbourhood")
     public String neighbourhood;
 
+    @NotBlank
+    @JsonProperty("city")
     public String city;
 
+    @NotBlank
+    @JsonProperty("state")
     public String state;
 
+    @NotBlank
+    @JsonProperty("country")
     public String country;
+
+    @NotNull
+    @JsonProperty("zipcode")
     public int zipcode;
+
     public String latitude;
     public String longitude;
 

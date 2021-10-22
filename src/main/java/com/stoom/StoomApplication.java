@@ -24,7 +24,7 @@ public class StoomApplication {
     }
 
     @Bean
-    public Docket api() {	
+    public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
