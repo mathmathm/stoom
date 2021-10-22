@@ -36,22 +36,26 @@ public class EnderecoService {
         return repository.save(model);
     }
 
-    public Endereco update(Integer id, Endereco enderecoUpdated) throws InterruptedException, ApiException, IOException {
+    public Endereco update(Integer id, EnderecoRequest enderecoRequest) throws InterruptedException, ApiException, IOException {
         Endereco endereco = repository.findById(id).get();
         if (endereco == null) {
             return null;
         }
-        endereco.setStreetName(enderecoUpdated.getStreetName());
-        endereco.setNumber(enderecoUpdated.getNumber());
-        endereco.setComplement(enderecoUpdated.getComplement());
-        endereco.setNeighbourhood(enderecoUpdated.getNeighbourhood());
-        endereco.setCity(enderecoUpdated.getCity());
-        endereco.setState(enderecoUpdated.getState());
-        endereco.setCountry(enderecoUpdated.getCountry());
-        endereco.setZipcode(enderecoUpdated.getZipcode());
-        endereco.setState(enderecoUpdated.getState());
-        endereco.setLatitude(enderecoUpdated.getLatitude());
-        endereco.setLongitude(enderecoUpdated.getLongitude());
+        endereco.setStreetName(enderecoRequest.getStreetName());
+        endereco.setNumber(enderecoRequest.getNumber());
+        endereco.setComplement(enderecoRequest.getComplement());
+        endereco.setNeighbourhood(enderecoRequest.getNeighbourhood());
+        endereco.setCity(enderecoRequest.getCity());
+        endereco.setState(enderecoRequest.getState());
+        endereco.setCountry(enderecoRequest.getCountry());
+        endereco.setZipcode(enderecoRequest.getZipcode());
+        endereco.setState(enderecoRequest.getState());
+        if (enderecoRequest.getLatitude() == null && enderecoRequest.getLongitude() == null) {
+            latitudeAndLongitudeNull(enderecoRequest);
+        } else {
+            endereco.setLatitude(enderecoRequest.getLatitude());
+            endereco.setLongitude(enderecoRequest.getLongitude());
+        }
 
         return repository.save(endereco);
     }

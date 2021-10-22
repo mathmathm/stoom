@@ -19,27 +19,25 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class StoomApplication {
 
-	public static void main(String[] args) {
-		ApplicationContext ctx = SpringApplication.run(StoomApplication.class, args);
+    public static void main(String[] args) {
+        ApplicationContext ctx = SpringApplication.run(StoomApplication.class, args);
+    }
 
-	}
+    @Bean
+    public Docket api() {	
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
+                .paths(PathSelectors.any())
+                .build()
+                .useDefaultResponseMessages(false);
+    }
 
-	@Bean
-	public Docket api() {
-
-		return new Docket(DocumentationType.SWAGGER_2)
-				.apiInfo(apiInfo())
-				.select()
-				.apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
-				.paths(PathSelectors.any())
-				.build()
-				.useDefaultResponseMessages(false);
-	}
-
-	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder()
-				.title("Teste Stoom")
-				.description("")
-				.build();
-	}
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("Teste Stoom")
+                .description("")
+                .build();
+    }
 }

@@ -41,7 +41,7 @@ public class EnderecoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Endereco> update(@PathVariable("id") Integer id, @RequestBody Endereco enderecoUpdated) throws InterruptedException, ApiException, IOException {
+    public ResponseEntity<Endereco> update(@PathVariable("id") Integer id, @Validated @RequestBody EnderecoRequest enderecoUpdated) throws InterruptedException, ApiException, IOException {
         return new ResponseEntity<Endereco>(service.update(id, enderecoUpdated), HttpStatus.OK);
     }
 
